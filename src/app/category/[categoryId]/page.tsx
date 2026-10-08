@@ -10,9 +10,9 @@ interface IPageDetailsProps {
 
 const Page = async ({ params }: IPageDetailsProps) => {
     const { categoryId } = await params;
-
+    console.log(categoryId)
     const response = await fetch(
-        `https://api.api-store.workers.dev/api/bazardor/products?category=${categoryId}`,
+        `https://api.abcz.workers.dev/api/bazardor/products?category=${categoryId}`,
     );
 
     if (!response.ok) {
@@ -20,8 +20,9 @@ const Page = async ({ params }: IPageDetailsProps) => {
     }
 
     const data: IAllProduct[] = await response.json();
-    console.log(data[0].image);
-    // English number to Bengali digits converter
+    if (data.length === 0) {
+        return <p>এই ক্যাটাগরিতে কোনো পণ্য পাওয়া যায়নি।</p>;
+    }
     const toBnNum = (num: number | string) =>
         num.toString().replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[parseInt(d)]);
     return (

@@ -3,13 +3,12 @@ import ItemCard from "./ItemCard";
 
 const PriceDown = async () => {
   const res = await fetch(
-    "https://api.api-store.workers.dev/api/bazardor/products",
+    "https://api.abcz.workers.dev/api/bazardor/products",
   );
   const products: IAllProduct[] = await res.json();
   const downProducts = products.filter(
     (item: IAllProduct) => item.change?.dir === "down",
   );
-  console.log(downProducts);
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center gap-2 mb-4 text-gray-900 font-bold text-xl">

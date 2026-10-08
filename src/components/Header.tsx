@@ -24,7 +24,7 @@ const Header = () => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          "https://api.api-store.workers.dev/api/bazardor/categories",
+          "https://api.abcz.workers.dev/api/bazardor/categories",
         );
         const data = await response.json();
         setCategories(data);
