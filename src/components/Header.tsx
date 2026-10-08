@@ -1,6 +1,7 @@
 "use client";
 import { ICategory } from "@/types/category.type";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Logo from "@/assets/logo-icon.png";
 import Image from "next/image";
 const Header = () => {
@@ -16,7 +17,9 @@ const Header = () => {
         month: "long",
         year: "numeric",
       };
-      setCurrentDate(new Intl.DateTimeFormat("bn-BD", options).format(new Date()));
+      setCurrentDate(
+        new Intl.DateTimeFormat("bn-BD", options).format(new Date()),
+      );
     };
     const fetchCategories = async () => {
       try {
@@ -40,20 +43,22 @@ const Header = () => {
     <div>
       <header className="w-full bg-[#f9faf9] border-b border-gray-100 font-sans">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-[#0ba85a] rounded-2xl flex items-center justify-center text-white shadow-sm">
-              <Image src={Logo} alt="Logo" width={30} height={30} />
-            </div>
+          <Link href="/">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-[#0ba85a] rounded-2xl flex items-center justify-center text-white shadow-sm">
+                <Image src={Logo} alt="Logo" width={30} height={30} />
+              </div>
 
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 leading-tight">
-                বাজার দর
-              </h1>
-              <p className="text-xs text-gray-500 font-medium mt-0.5">
-                {currentDate || ""}
-              </p>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 leading-tight">
+                  বাজার দর
+                </h1>
+                <p className="text-xs text-gray-500 font-medium mt-0.5">
+                  {currentDate || ""}
+                </p>
+              </div>
             </div>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-4">
             <button className="text-gray-800 text-sm font-semibold hover:text-green-700 transition-colors px-3 py-2">

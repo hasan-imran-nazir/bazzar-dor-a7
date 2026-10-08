@@ -48,9 +48,11 @@ const Banner = () => {
           <Image
             src={BannerImage}
             alt="Banner Image"
+            priority
             width={320}
             height={256}
-
+            className="w-full h-auto object-contain"
+            style={{ width: "auto", height: "auto" }}
           />
         </div>
       </div>

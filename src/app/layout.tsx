@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { Noto_Sans_Bengali } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const notoSansBengali = Noto_Sans_Bengali({
   subsets: ["latin", "bengali"],
 });
-
 
 export const metadata: Metadata = {
   title: "বাজার দর",
@@ -16,13 +16,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
-      className={`${notoSansBengali.className} h-full antialiased`}
+      lang="bn"
+      className={`light ${notoSansBengali.className} h-full antialiased`}
+      style={{ colorScheme: "light" }}
     >
       <body className="min-h-full flex flex-col">
         <Header />
         {children}
-        </body>
+        <Footer/>
+      </body>
     </html>
   );
 }
