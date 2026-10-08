@@ -34,10 +34,11 @@ const page = async ({ params }: IItemDetailsProps) => {
             : "text-gray-500";
 
     const arrowIcon = isUp ? "▲" : isDown ? "▼" : "▬";
-
+    const priceChange = product.change?.dir === "up" ? "বেড়েছে" : product.change?.dir === "down" ? "কমেছে" : "পরিবর্তন হয়নি";
+    const priceChangeAmount =  Math.abs(Math.round(product.today - product.yesterday));
 
     return (
-        <div className="w-full max-w-6xl mx-auto px-4 py-6 text-gray-800 space-y-6">
+        <div className="container mx-auto px-4 py-6 text-gray-800 space-y-6">
             <nav className="flex items-center gap-2 text-xs sm:text-sm text-gray-500">
                 <Link href="/" className="hover:text-gray-900 transition-colors">
                     হোম
@@ -63,7 +64,7 @@ const page = async ({ params }: IItemDetailsProps) => {
                             প্রতি {product.unit} · {product.nameBn}
                         </p>
                         <p className="text-xs sm:text-sm text-gray-600 font-medium">
-                            গতকালকের তুলনায় আজ দাম <span className="font-bold text-gray-900">বেড়েছে</span> · ২ টাকা
+                            গতকালকের তুলনায় আজ দাম <span className="font-bold text-gray-900">{priceChange}</span> · {priceChangeAmount} টাকা
                         </p>
                     </div>
                 </div>
