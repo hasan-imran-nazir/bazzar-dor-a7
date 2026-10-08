@@ -46,7 +46,7 @@ const Header = () => {
           <Link href="/">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-[#0ba85a] rounded-2xl flex items-center justify-center text-white shadow-sm">
-                <Image src={Logo} alt="Logo" width={30} height={30} />
+                <Image src={Logo} alt="Logo" width={30} height={30} loading="eager"/>
               </div>
 
               <div>
@@ -76,8 +76,8 @@ const Header = () => {
               <p className="text-xs text-gray-400 py-1">লোডিং ক্যাটাগরি...</p>
             ) : (
               categories.map((category) => (
-                <a
-                  key={category.id || category.slug}
+                <Link
+                  key={category.id}
                   href={`/category/${category.slug}`}
                   className="flex items-center gap-2 text-gray-800 hover:text-[#008a45] font-medium text-sm transition-colors whitespace-nowrap group"
                 >
@@ -85,7 +85,7 @@ const Header = () => {
                     {category.icon}
                   </span>
                   <span>{category.nameBn}</span>
-                </a>
+                </Link>
               ))
             )}
           </nav>
