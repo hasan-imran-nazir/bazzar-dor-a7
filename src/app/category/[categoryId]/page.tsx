@@ -12,7 +12,7 @@ const Page = async ({ params }: IPageDetailsProps) => {
     const { categoryId } = await params;
     console.log(categoryId)
     const response = await fetch(
-        `https://api.abcz.workers.dev/api/bazardor/products?category=${categoryId}`,
+        `https://api.api-store.workers.dev/api/bazardor/products?category=${categoryId}`,
     );
 
     if (!response.ok) {

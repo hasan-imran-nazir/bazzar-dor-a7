@@ -5,11 +5,12 @@ import { FaGithub } from "react-icons/fa6";
 import { authClient } from "@/lib/auth-client";
 import { redirect } from "next/navigation";
 import React from "react";
+import toast from "react-hot-toast";
 const page = () => {
-    const onSubmit = async (e:React.SubmitEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const user = Object.fromEntries(formData.entries()) as {name:string, email:string, password:string, image?:string}  ;
+        const user = Object.fromEntries(formData.entries()) as { name: string, email: string, password: string, image?: string };
         const { data, error } = await authClient.signUp.email({
             ...user,
             callbackURL: "/"
@@ -20,6 +21,25 @@ const page = () => {
         }
         if (error) {
             console.log(error)
+        }
+
+    }
+    const handleGoogleSignin = async () => {
+        const data = await authClient.signIn.social({
+            provider: "google",
+        });
+        if (data.error) {
+            toast.error(`${data.error}`)
+
+        }
+    }
+    const handleGitHubSignin = async () => {
+        const data = await authClient.signIn.social({
+            provider: "github"
+        })
+        if (data.error) {
+            toast.error(`${data.error}`)
+
         }
     }
     return (
@@ -89,6 +109,7 @@ const page = () => {
 
                     <div className="grid grid-cols-2 gap-3">
                         <button
+                            onClick={handleGoogleSignin}
                             type="button"
                             className="flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2 px-3 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                         >
@@ -97,6 +118,7 @@ const page = () => {
                         </button>
 
                         <button
+                            onClick={handleGitHubSignin}
                             type="button"
                             className="flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2 px-3 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                         >

@@ -11,7 +11,7 @@ interface IItemDetailsProps {
 const page = async ({ params }: IItemDetailsProps) => {
     const { productId } = await params;
     const response = await fetch(
-        `https://api.abcz.workers.dev/api/bazardor/products/${productId}`,
+        `https://api.api-store.workers.dev/api/bazardor/products/${productId}`,
     );
 
     if (!response.ok) {

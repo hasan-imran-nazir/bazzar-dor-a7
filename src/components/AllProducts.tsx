@@ -3,7 +3,7 @@ import ItemCard from "./ItemCard";
 
 const AllProducts = async () => {
   const res = await fetch(
-    "https://api.abcz.workers.dev/api/bazardor/products",
+    "https://api.api-store.workers.dev/api/bazardor/products",
     { cache: "force-cache" }
   );
   const products: IAllProduct[] = await res.json();

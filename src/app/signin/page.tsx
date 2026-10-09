@@ -1,10 +1,45 @@
+"use client"
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa6";
+import { authClient } from "@/lib/auth-client";
+import React from "react";
+import toast from "react-hot-toast";
 const page = () => {
+    const onSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const user = Object.fromEntries(formData.entries()) as { email: string, password: string };
+        const { data, error } = await authClient.signIn.email({
+            ...user,
+            callbackURL: "/"
+        })
+        if (data) {
+            toast.success("Sign in successful!")
+            // console.log(data)
+        }
+        if (error) {
+            toast.error(`${error.message}`)
+            // console.log(error)
+        }
+    }
+    const handleGoogleSignin = async () => {
+        const data = await authClient.signIn.social({
+            provider: "google",
+        });
+
+    }
+    const handleGitHubSignin = async () => {
+        const data = await authClient.signIn.social({
+            provider: "github"
+        })
+        if (data) {
+            toast.success(`${data} i dont know yet`)
+        }
+    }
     return (
         <div>
-            <form className="w-full max-w-md mx-auto py-12 flex flex-col items-center">
+            <form onSubmit={onSubmit} className="w-full max-w-md mx-auto py-12 flex flex-col items-center">
                 <div className="text-center mb-8 space-y-1.5">
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
                         সাইন ইন
@@ -49,6 +84,7 @@ const page = () => {
 
                     <div className="grid grid-cols-2 gap-3">
                         <button
+                            onClick={handleGoogleSignin}
                             type="button"
                             className="flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2 px-3 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                         >
@@ -57,6 +93,7 @@ const page = () => {
                         </button>
 
                         <button
+                            onClick={handleGitHubSignin}
                             type="button"
                             className="flex items-center justify-center gap-2 border border-gray-200 rounded-xl py-2 px-3 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                         >

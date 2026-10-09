@@ -2,6 +2,7 @@
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { Avatar } from "@heroui/react";
+import { Button, Dropdown, Kbd, Label } from "@heroui/react";
 const UserInfo = () => {
     const { data: session } = authClient.useSession()
     const user = session?.user
@@ -15,15 +16,45 @@ const UserInfo = () => {
             .slice(0, 2)
             .join("");
     }
+    const handleSignout = async () => {
+        await authClient.signOut();
+    }
     return (
         <div>
             {
                 user ? <div className="flex items-center gap-2">
-                    <Avatar className="rounded-lg">
-                        <Avatar.Image alt={user?.name} src={user?.image as string} />
-                        <Avatar.Fallback className="rounded-lg">{getInitials(user?.name)}</Avatar.Fallback>
+                    <Avatar >
+                        <Avatar.Image alt={getInitials(user?.name)} src={user?.image as string | undefined} />
+                        <Avatar.Fallback className="rounded-lg">{getInitials(user?.image as string)}</Avatar.Fallback>
                     </Avatar>
-                    <div><h2>{user?.name}</h2></div>
+                    <Dropdown>
+                        <Button aria-label="Menu" variant="ghost">
+                            {user?.name}
+                        </Button>
+                        <Dropdown.Popover >
+                            <Dropdown.Menu onAction={(key) => console.log(`Selected: ${key}`)}>
+                                <Dropdown.Item className="font-semibold text-xl">
+                                    {user?.name}
+                                </Dropdown.Item>
+                                <Dropdown.Item>
+                                    {user?.email}
+                                </Dropdown.Item>
+                                <Dropdown.Item id="Profile" textValue="Save file">
+                                    <Label>👤 আমার প্রোফাইল</Label>
+                                    <Kbd className="ms-auto" slot="keyboard" variant="light">
+
+                                    </Kbd>
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={handleSignout} id="signout" textValue="Delete file" variant="danger">
+                                    <Label >↩ সাইন আউট</Label>
+                                    <Kbd className="ms-auto" slot="keyboard" variant="light">
+
+
+                                    </Kbd>
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown.Popover>
+                    </Dropdown>
                 </div> : <div className="flex items-center gap-4">
                     <Link href="/signin" className="cursor-pointer">
                         <button className="text-gray-800 text-sm font-semibold hover:text-green-700 transition-colors px-3 py-2">
