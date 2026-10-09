@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Logo from "@/assets/logo-icon.png";
 import Image from "next/image";
+import UserInfo from "./UserInfo";
 const Header = () => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -46,7 +47,7 @@ const Header = () => {
           <Link href="/">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-[#0ba85a] rounded-2xl flex items-center justify-center text-white shadow-sm">
-                <Image src={Logo} alt="Logo" width={30} height={30} loading="eager"/>
+                <Image src={Logo} alt="Logo" width={30} height={30} loading="eager" />
               </div>
 
               <div>
@@ -60,14 +61,7 @@ const Header = () => {
             </div>
           </Link>
 
-          <div className="flex items-center gap-4">
-            <button className="text-gray-800 text-sm font-semibold hover:text-green-700 transition-colors px-3 py-2">
-              সাইন ইন
-            </button>
-            <button className="bg-[#008a45] text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-[#00753a] transition-colors shadow-sm">
-              সাইন আপ
-            </button>
-          </div>
+          <UserInfo />
         </div>
 
         <div className="container mx-auto px-4 py-2 border-t border-gray-100/60">
