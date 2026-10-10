@@ -36,8 +36,8 @@ const page = () => {
         const data = await authClient.signIn.social({
             provider: "github"
         })
-        if (data) {
-            toast.success("Signin Successful")
+        if (data.error) {
+            toast.error(`${data.error}`)
         }
     }
     return (

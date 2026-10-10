@@ -6,6 +6,12 @@ const client = new MongoClient(process.env.MONGODB_URL as string);
 const db = client.db("bazzar-dor");
 
 export const auth = betterAuth({
+    baseURL: process.env.BETTER_AUTH_URL,
+    trustedOrigins: [
+        process.env.BETTER_AUTH_URL || "",
+        process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "",
+        "https://*.vercel.app",
+    ],
     emailAndPassword: {
         enabled: true
     },
