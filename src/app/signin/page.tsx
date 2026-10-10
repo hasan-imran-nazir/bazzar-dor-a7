@@ -37,7 +37,7 @@ const page = () => {
             provider: "github"
         })
         if (data) {
-            toast.success(`${data} i dont know yet`)
+            toast.success("Signin Successful")
         }
     }
     return (
