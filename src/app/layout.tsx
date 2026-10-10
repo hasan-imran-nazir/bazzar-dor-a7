@@ -19,7 +19,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="bn"
-      className={`light ${notoSansBengali.className} h-full antialiased`}
+      className={`light ${notoSansBengali.className} h-full antialiased scroll-smooth`}
       style={{ colorScheme: "light" }}
     >
       <body className="min-h-full flex flex-col">

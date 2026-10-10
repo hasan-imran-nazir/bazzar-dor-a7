@@ -1,6 +1,7 @@
 export const instant = false;
 import { IAllProduct } from "@/types/allProduct.type";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface IItemDetailsProps {
     params: Promise<{
@@ -11,13 +12,16 @@ interface IItemDetailsProps {
 const page = async ({ params }: IItemDetailsProps) => {
     const { productId } = await params;
     const response = await fetch(
-        `https://api.api-store.workers.dev/api/bazardor/products/${productId}`,
+        `https://api.abcz.workers.dev/api/bazardor/products/${productId}`,
     );
-
+    if (response.status === 404) {
+        notFound();
+    }
     if (!response.ok) {
         throw new Error("No product found");
     }
     const product: IAllProduct = await response.json();
+
     const toBnNum = (num: number | string) =>
         num.toString().replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[parseInt(d)]);
     const maxPrice = Math.max(...product.markets.map((market) => market.max));
@@ -35,7 +39,7 @@ const page = async ({ params }: IItemDetailsProps) => {
 
     const arrowIcon = isUp ? "▲" : isDown ? "▼" : "▬";
     const priceChange = product.change?.dir === "up" ? "বেড়েছে" : product.change?.dir === "down" ? "কমেছে" : "পরিবর্তন হয়নি";
-    const priceChangeAmount =  Math.abs(Math.round(product.today - product.yesterday));
+    const priceChangeAmount = Math.abs(Math.round(product.today - product.yesterday));
 
     return (
         <div className="container mx-auto px-4 py-6 text-gray-800 space-y-6">

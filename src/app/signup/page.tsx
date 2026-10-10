@@ -10,11 +10,17 @@ const page = () => {
     const onSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target);
+        if (formData.get("password") !== formData.get("confirmPassword")) {
+            toast.error("পাসওয়ার্ড দুটি মিলছে না!");
+            return;
+        }
+
         const user = Object.fromEntries(formData.entries()) as { name: string, email: string, password: string, image?: string };
         const { data, error } = await authClient.signUp.email({
             ...user,
             callbackURL: "/"
         })
+
         if (data) {
             console.log(data)
             redirect("/")

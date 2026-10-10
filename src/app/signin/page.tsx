@@ -27,6 +27,9 @@ const page = () => {
         const data = await authClient.signIn.social({
             provider: "google",
         });
+        if (data.error) {
+            toast.error(`${data.error}`)
+        }
 
     }
     const handleGitHubSignin = async () => {

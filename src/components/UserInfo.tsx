@@ -2,7 +2,7 @@
 import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { Avatar } from "@heroui/react";
-import { Button, Dropdown, Kbd, Label } from "@heroui/react";
+import { Button, Dropdown, Label } from "@heroui/react";
 const UserInfo = () => {
     const { data: session } = authClient.useSession()
     const user = session?.user
@@ -23,9 +23,9 @@ const UserInfo = () => {
         <div>
             {
                 user ? <div className="flex items-center gap-2">
-                    <Avatar >
-                        <Avatar.Image alt={getInitials(user?.name)} src={user?.image as string | undefined} />
-                        <Avatar.Fallback className="rounded-lg">{getInitials(user?.image as string)}</Avatar.Fallback>
+                    <Avatar className="rounded-lg">
+                        <Avatar.Image alt={user?.name as string} src={user?.image as string} />
+                        <Avatar.Fallback className="rounded-lg">{getInitials(user?.name as string)}</Avatar.Fallback>
                     </Avatar>
                     <Dropdown>
                         <Button aria-label="Menu" variant="ghost">
@@ -40,17 +40,12 @@ const UserInfo = () => {
                                     {user?.email}
                                 </Dropdown.Item>
                                 <Dropdown.Item id="Profile" textValue="Save file">
-                                    <Label>👤 আমার প্রোফাইল</Label>
-                                    <Kbd className="ms-auto" slot="keyboard" variant="light">
+                                    <Link href="/profile"><Label>👤 আমার প্রোফাইল</Label></Link>
 
-                                    </Kbd>
                                 </Dropdown.Item>
                                 <Dropdown.Item onClick={handleSignout} id="signout" textValue="Delete file" variant="danger">
                                     <Label >↩ সাইন আউট</Label>
-                                    <Kbd className="ms-auto" slot="keyboard" variant="light">
 
-
-                                    </Kbd>
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown.Popover>
