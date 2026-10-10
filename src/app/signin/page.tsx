@@ -3,43 +3,48 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa6";
 import { authClient } from "@/lib/auth-client";
-import React from "react";
 import toast from "react-hot-toast";
-const page = () => {
-    const onSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
+import React from "react";
+
+const Page = () => {
+    const onSubmit = async (e:React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
+        const formData = new FormData(e.currentTarget);
         const user = Object.fromEntries(formData.entries()) as { email: string, password: string };
+        
         const { data, error } = await authClient.signIn.email({
             ...user,
             callbackURL: "/"
-        })
+        });
+
         if (data) {
-            toast.success("Sign in successful!")
-            // console.log(data)
+            toast.success("Sign in successful!");
         }
         if (error) {
-            toast.error(`${error.message}`)
-            // console.log(error)
+            toast.error(error.message || "An error occurred");
         }
-    }
-    const handleGoogleSignin = async () => {
-        const data = await authClient.signIn.social({
-            provider: "google",
-        });
-        if (data.error) {
-            toast.error(`${data.error}`)
-        }
+    };
 
-    }
-    const handleGitHubSignin = async () => {
-        const data = await authClient.signIn.social({
-            provider: "github"
-        })
-        if (data.error) {
-            toast.error(`${data.error}`)
+    const handleGoogleSignin = async () => {
+        const { error } = await authClient.signIn.social({
+            provider: "google",
+            callbackURL: "/"
+        });
+        if (error) {
+            toast.error(error.message || "Google sign-in failed");
         }
-    }
+    };
+
+    const handleGitHubSignin = async () => {
+        const { error } = await authClient.signIn.social({
+            provider: "github",
+            callbackURL: "/"
+        });
+        if (error) {
+            toast.error(error.message || "GitHub sign-in failed");
+        }
+    };
+
     return (
         <div>
             <form onSubmit={onSubmit} className="w-full max-w-md mx-auto py-12 flex flex-col items-center">
@@ -58,6 +63,7 @@ const page = () => {
                         <input
                             type="email"
                             name="email"
+                            required
                             placeholder="you@example.com"
                             className="w-full bg-[#fcfdfe] border border-gray-200/80 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-emerald-600"
                         />
@@ -68,6 +74,7 @@ const page = () => {
                         <input
                             type="password"
                             name="password"
+                            required
                             placeholder="কমপক্ষে ৮ অক্ষর"
                             className="w-full bg-[#fcfdfe] border border-gray-200/80 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-emerald-600"
                         />
@@ -124,4 +131,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

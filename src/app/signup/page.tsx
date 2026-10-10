@@ -3,51 +3,83 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa6";
 import { authClient } from "@/lib/auth-client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
-const page = () => {
-    const onSubmit = async (e: React.SubmitEvent<HTMLElement>) => {
+
+const Page = () => {
+    const router = useRouter();
+
+    const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        if (formData.get("password") !== formData.get("confirmPassword")) {
+        const formData = new FormData(e.currentTarget);
+
+        const password = formData.get("password") as string;
+        const confirmPassword = formData.get("confirmPassword") as string;
+
+        if (password !== confirmPassword) {
             toast.error("পাসওয়ার্ড দুটি মিলছে না!");
             return;
         }
 
-        const user = Object.fromEntries(formData.entries()) as { name: string, email: string, password: string, image?: string };
+        const name = formData.get("name") as string;
+        const email = formData.get("email") as string;
+
         const { data, error } = await authClient.signUp.email({
-            ...user,
+            email,
+            password,
+            name,
             callbackURL: "/"
-        })
+        });
 
         if (data) {
-            console.log(data)
-            redirect("/")
+            toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
+            router.push("/");
+            router.refresh();
         }
+
         if (error) {
-            console.log(error)
+            toast.error(error.message || "সাইন আপ করতে সমস্যা হয়েছে");
         }
+    };
 
-    }
     const handleGoogleSignin = async () => {
-        const data = await authClient.signIn.social({
-            provider: "google",
-        });
-        if (data.error) {
-            toast.error(`${data.error}`)
+        try {
+            const res = await authClient.signIn.social({
+                provider: "google",
+                callbackURL: "/",
+            });
 
+            if (res && "error" in res && res.error) {
+                toast.error(res.error.message || "Google sign-in failed");
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+            } else {
+                toast.error("An unknown error occurred");
+            }
         }
-    }
+    };
+
     const handleGitHubSignin = async () => {
-        const data = await authClient.signIn.social({
-            provider: "github"
-        })
-        if (data.error) {
-            toast.error(`${data.error}`)
-
+        try {
+            const res = await authClient.signIn.social({
+                provider: "github",
+                callbackURL: "/",
+            });
+            if (res && "error" in res && res.error) {
+                toast.error(res.error.message || "GitHub sign-in failed");
+            }
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                toast.error(err.message);
+            } else {
+                toast.error("An unknown error occurred");
+            }
         }
-    }
+    };
+
     return (
         <div>
             <form onSubmit={onSubmit} className="w-full max-w-md mx-auto py-12 flex flex-col items-center">
@@ -66,6 +98,7 @@ const page = () => {
                         <input
                             type="text"
                             name="name"
+                            required
                             placeholder="যেমন: রহিম উদ্দিন"
                             className="w-full bg-[#fcfdfe] border border-gray-200/80 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-emerald-600"
                         />
@@ -76,26 +109,30 @@ const page = () => {
                         <input
                             type="email"
                             name="email"
+                            required
                             placeholder="you@example.com"
                             className="w-full bg-[#fcfdfe] border border-gray-200/80 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-emerald-600"
                         />
                     </div>
 
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold text-gray-700 block">পাসওয়ার্ড</label>
+                        <label className="text-xs font-semibold text-gray-700 block">পাসওয়ার্ড</label>
                         <input
                             type="password"
                             name="password"
+                            required
+                            minLength={8}
                             placeholder="কমপক্ষে ৮ অক্ষর"
                             className="w-full bg-[#fcfdfe] border border-gray-200/80 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-emerald-600"
                         />
                     </div>
 
                     <div className="space-y-1">
-                        <label className="text-xs font-semibold text-gray-700 block">পাসওয়ার্ড নিশ্চিত করুন</label>
+                        <label className="text-xs font-semibold text-gray-700 block">পাসওয়ার্ড নিশ্চিত করুন</label>
                         <input
                             type="password"
                             name="confirmPassword"
+                            required
                             placeholder="আবার লিখুন"
                             className="w-full bg-[#fcfdfe] border border-gray-200/80 rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-emerald-600"
                         />
@@ -152,4 +189,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
