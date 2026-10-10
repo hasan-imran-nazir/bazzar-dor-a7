@@ -1,11 +1,10 @@
 "use client"
 import { authClient } from "@/lib/auth-client";
 import { Avatar } from "@heroui/react";
-import { useRouter } from "next/navigation";
 import React from "react";
+import toast from "react-hot-toast";
 
 const ProfilePage = () => {
-    const router = useRouter();
     const { data: session } = authClient.useSession()
     const user = session?.user
     console.log(user?.name)
@@ -21,8 +20,16 @@ const ProfilePage = () => {
     }
 
     const handleSignout = async () => {
-        await authClient.signOut();
-        router.replace("/");
+        try {
+            await authClient.signOut();
+            toast.success("সাইন-আউট করেছেন!");
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 800);
+        } catch (err) {
+            toast.error(`${err}` || "সাইন-আউট করতে সমস্যা হয়েছে");
+        }
     }
     const handleUpdateProfile = async (e: React.SubmitEvent<HTMLElement>) => {
         e.preventDefault()

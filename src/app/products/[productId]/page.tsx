@@ -39,7 +39,7 @@ const page = async ({ params }: IItemDetailsProps) => {
 
     const arrowIcon = isUp ? "▲" : isDown ? "▼" : "▬";
     const priceChange = product.change?.dir === "up" ? "বেড়েছে" : product.change?.dir === "down" ? "কমেছে" : "পরিবর্তন হয়নি";
-    const priceChangeAmount = Math.abs(Math.round(product.today - product.yesterday));
+
 
     return (
         <div className="container mx-auto px-4 py-6 text-gray-800 space-y-6">
@@ -58,7 +58,7 @@ const page = async ({ params }: IItemDetailsProps) => {
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100/80 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
                     <span className="w-16 h-16 rounded-2xl bg-[#f2f5f1] flex items-center justify-center shrink-0 text-3xl">
-                        🍚
+                        {product.image}
                     </span>
                     <div className="space-y-1">
                         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
@@ -68,7 +68,7 @@ const page = async ({ params }: IItemDetailsProps) => {
                             প্রতি {product.unit} · {product.nameBn}
                         </p>
                         <p className="text-xs sm:text-sm text-gray-600 font-medium">
-                            গতকালকের তুলনায় আজ দাম <span className="font-bold text-gray-900">{priceChange}</span> · {priceChangeAmount} টাকা
+                            গতকালকের তুলনায় আজ দাম <span className="font-bold text-gray-900">{priceChange}</span> · {toBnNum(Math.abs(product.change?.pct))} %
                         </p>
                     </div>
                 </div>
@@ -111,7 +111,7 @@ const page = async ({ params }: IItemDetailsProps) => {
                     <div className="bg-[#f8faf8] p-4 rounded-xl border border-gray-100 space-y-1">
                         <p className="text-xs text-gray-500">গড় দাম</p>
                         <p className="text-xl font-bold text-[#16a34a]">
-                            {toBnNum(avgPrice)} <span className="text-sm font-semibold">টাকা</span>
+                            {toBnNum(Math.round(avgPrice))} <span className="text-sm font-semibold">টাকা</span>
                         </p>
                         <p className="text-[11px] text-gray-400">প্রতি কেজি-এর হিসাবে</p>
                     </div>

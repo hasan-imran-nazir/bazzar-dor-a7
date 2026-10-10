@@ -29,13 +29,11 @@ const Page = () => {
             email,
             password,
             name,
-            callbackURL: "/"
         });
 
         if (data) {
-            toast.success("অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
+            toast.success(`স্বাগতম ${name}! আপনার অ্যাকাউন্ট তৈরি হয়েছে।`);
             router.push("/");
-            router.refresh();
         }
 
         if (error) {

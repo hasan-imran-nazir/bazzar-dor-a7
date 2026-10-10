@@ -3,6 +3,7 @@ import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { Avatar } from "@heroui/react";
 import { Button, Dropdown, Label } from "@heroui/react";
+import toast from "react-hot-toast";
 const UserInfo = () => {
     const { data: session } = authClient.useSession()
     const user = session?.user
@@ -17,7 +18,16 @@ const UserInfo = () => {
             .join("");
     }
     const handleSignout = async () => {
-        await authClient.signOut();
+        try {
+            await authClient.signOut();
+            toast.success("সাইন-আউট করেছেন!");
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 800);
+        } catch (err) {
+            toast.error(`${err}`||"সাইন-আউট করতে সমস্যা হয়েছে");
+        }
     }
     return (
         <div>

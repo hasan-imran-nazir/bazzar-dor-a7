@@ -4,24 +4,35 @@ import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa6";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
-import React from "react";
+import React, { useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 
 const Page = () => {
-    const onSubmit = async (e:React.SyntheticEvent<HTMLFormElement>) => {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        const errorMsg = searchParams.get("error");
+        if (errorMsg) {
+            toast.error(errorMsg);
+        }
+    }, [searchParams]);
+
+    const onSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const user = Object.fromEntries(formData.entries()) as { email: string, password: string };
-        
+        const user = Object.fromEntries(formData.entries()) as { email: string, password: string, name:string };
+
         const { data, error } = await authClient.signIn.email({
             ...user,
-            callbackURL: "/"
         });
 
-        if (data) {
-            toast.success("Sign in successful!");
-        }
         if (error) {
             toast.error(error.message || "An error occurred");
+        }
+        if (data) {
+            toast.success(`স্বাগতম ${user.name}!`);
+            router.push("/");
         }
     };
 
