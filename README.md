@@ -1,6 +1,6 @@
 # বাজার দর | BazarDor
 
-**BazarDor** is a Bengali-language marketplace price guide that helps users explore current prices of everyday products, compare market prices, and see which prices have risen or fallen.
+**BazarDor** is a marketplace price guide that helps users explore current prices of everyday products, compare market prices, and see which prices have risen or fallen.
 
 ## Technologies Used
 
